@@ -1,0 +1,95 @@
+label variable q54 "choice to opt for augmented water supply, 1 = yes"
+label variable emp_grp "employment group"
+label variable reuse_concern "concerns about reuse of treated water"
+label variable contri_augwater "willing to contribute towards the installation"
+rename reuse_concern q51
+label variable sludge_awareness "awareness about sludge reuse"
+label variable awareness_ttww "awareness about non-potable treated WW use"
+rename perception_ttww q38
+label variable q38 "perception of reuse of treated water"
+label variable q37 "familiarity with concept of reuse of treated wastewater"
+label variable q56 "willingness to participate in augmented water supply"
+label variable q54 "continue to participate to scenario A "
+tab hh_size
+tabstat wtp, by(hh_size) statistics(mean sd)
+graph pie, over(hh_size) title(Household Size in the sample) caption(Authors' creation using STATA 17; Source - Household Survey)
+twoway (scatter wtp emp_grp)
+twoway (scatter wtp contri_augwater)
+tabstat wtp, by( emp_grp) statistics(mean median sd)
+graph bar (mean) wtp
+graph bar (mean) wtp, over(hh_size)
+
+graph bar (mean) wtp, over(children)
+graph bar (mean) wtp, over(children)
+
+graph bar (mean) wtp, over( awareness_ttww sludge_awareness )
+graph bar (mean) wtp, over( awareness_ttww)
+graph bar (mean) wtp, over(contri_augwater) over(sludge_awareness) over(awareness_ttww)
+graph bar (mean) wtp, over(contri_augwater) over(sludge_awareness)
+graph bar (mean) wtp, over(contri_augwater) scheme(s2color)
+graph bar (mean) wtp, over(contri_augwater) scheme(sj)
+graph bar (mean) wtp, over(contri_augwater)
+graph bar (mean) wtp, over( emp_grp )
+
+corr wtp age
+graph bar (mean) wtp, over( education )
+
+gen id = _n
+twoway (scatter wtp id)
+graph bar (mean) wtp, over( gender )
+graph bar (mean) wtp, over(gender, label(labsize(large))) title(Mean WTP vs. the gender of the respondents) scheme(sj)
+graph bar (mean) wtp, over(gender, label(labsize(large))) title(Mean WTP vs. the gender of the respondents)
+
+graph bar (mean) wtp (sd) wtp, over(gender, label(labsize(large))) title(Mean WTP vs. the gender of the respondents) scheme(sj)
+graph bar (mean) wtp (sd) wtp, over(gender) title(Mean WTP vs. the gender of the respondents) scheme(sj)
+graph bar (mean) wtp (sd) wtp, over(gender) title(Mean WTP vs. the gender of the respondents)
+graph bar (mean) wtp, over( awareness_ttww )
+
+graph bar (mean) wtp, over(contri_augwater) title(Mean WTP vs. Willingness to contribute of augmentation of water supply) scheme(sj)
+graph bar (mean) wtp, over(contri_augwater) title(Mean WTP vs. Willingness to contribute for augmented water supply)
+graph export "C:\Users\kaila\OneDrive - Teri University\Project_Dec23\CVM\StatA_analysis\Graph.jpg", as(jpg) name("Graph") quality(90)
+graph bar (mean) wtp, over( awareness_ttww ) title(Mean WTP vs. Awareness about reuse of treated water)
+
+graph bar (mean) wtp, over( sludge_awareness ) title(Mean WTP vs. Awareness about sludge reuse)
+
+label variable q56 "willingness to pay for augmented water supply"
+sum income
+gen ln_income = ln(income)
+label variable ln_income "log of hh income"
+gen pc_income = income/ hh_size
+label variable pc_income "per capita hh income"
+twoway (scatter pc_income id)
+
+twoway (scatter ln_income id)
+gen ln_pcinc = ln(pc_income)
+twoway (scatter ln_pcinc id)
+tab q56
+tab q54 q56
+tab q54
+logit q56 i.gender ln_pcinc i.children i.education i.awareness_ttww i.sludge_awareness i.q38 i.q37 i.emp_grp hh_size age
+logit q56 i.gender ln_pcinc hh_size age
+logit q56 i.gender i.emp_grp hh_size age
+save "C:\Users\kaila\OneDrive - Teri University\Project_Dec23\CVM\StatA_analysis\CVM_DTA.dta", replace
+log using my_results.log, replace
+log using my_results.log, replace
+#07/04/2025
+browse
+label variable q25 "water quality concern"
+tab q25
+graph bar (mean) q25, title(X)
+graph bar (mean) wtp, over(q25)
+graph bar (mean) wtp, over(q25) ytitle(Mean WTP) title(Mean WTP vs Concern about water quality)
+graph bar (mean) wtp, over(q25) blabel(group) ytitle(Mean WTP) title(Mean WTP vs Concern about water quality)
+graph bar (mean) wtp, over(q25) blabel(bar) ytitle(Mean WTP) title(Mean WTP vs Concern about water quality)
+graph bar (mean) wtp, over(q25) ytitle(Mean WTP) title(Mean WTP vs Concern about water quality)
+
+graph bar (mean) wtp, over(q25) ytitle(Mean WTP) title(Mean WTP vs the households perception about water quality impact on health)
+summarize wtp yl yu, detail
+asdoc summarize wtp yl yu, detail
+tabulate wtp yl yu
+tabulate wtp
+tabulate wtp, sort
+tabulate yl, sort
+tabulate yu, sort
+sum yl yu
+tab education

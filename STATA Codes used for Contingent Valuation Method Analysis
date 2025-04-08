@@ -1,3 +1,8 @@
+#The first step is uploading the dataset. For uploading the dataset on STATA, use the import command on the top band in the file section of the STATA window.
+#Here I have started with labeling and renaming the variables as per requirment.
+#After that bar graphs have been prepared for univariate analysis.
+#The analysis and inferences will be published in a paper soon. 
+
 label variable q54 "choice to opt for augmented water supply, 1 = yes"
 label variable emp_grp "employment group"
 label variable reuse_concern "concerns about reuse of treated water"

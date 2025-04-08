@@ -16,5 +16,5 @@ The data is collected from household surveys in Odisha and West Bengal. The data
 
 ---
 #Results and Discussions from the analysis
-> this will be posted over time.
+this will be posted over time.
 ---
